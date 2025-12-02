@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 py-8">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-3xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
+                Customer Ledger
+            </h2>
+            <p class="mt-2 text-sm text-gray-400">View detailed transaction history for any customer.</p>
+        </div>
+    </div>
+
+    <div class="bg-[#111] shadow-xl sm:rounded-xl border border-gray-800 card-gradient overflow-hidden mb-8">
+        <div class="px-4 py-5 sm:p-6">
+            <form action="/reports/ledger" method="GET" class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div class="sm:col-span-2">
+                    <label for="customer_id" class="block text-sm font-medium text-gray-300 mb-1">Customer</label>
+                    <select id="customer_id" name="customer_id"
+                        class="block w-full pl-3 pr-10 py-2 text-base bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="">Select Customer</option>
+                        {% for c in customers %}
+                        <option value="{{ c.id }}" {% if selected_customer_id==c.id %}selected{% endif %}>{{ c.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="start_date" class="block text-sm font-medium text-gray-300 mb-1">Start Date</label>
+                    <input type="date" name="start_date" id="start_date" value="{{ start_date }}"
+                        class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="end_date" class="block text-sm font-medium text-gray-300 mb-1">End Date</label>
+                    <input type="date" name="end_date" id="end_date" value="{{ end_date }}"
+                        class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="sm:col-span-6 flex justify-end">
+                    <button type="submit"
+                        class="inline-flex justify-center py-2 px-6 border border-transparent shadow-lg text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all btn-scale">
+                        Generate Ledger
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if customer %}
+    <div class="flex flex-col">
+        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div class="overflow-hidden shadow-xl ring-1 ring-white/10 md:rounded-xl bg-[#111] card-gradient">
+                    <table class="min-w-full divide-y divide-gray-800">
+                        <thead class="bg-black/50">
+                            <tr>
+                                <th scope="col"
+                                    class="py-4 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 sm:pl-6">Date
+                                </th>
+                                <th scope="col" class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
+                                    Particulars</th>
+                                <th scope="col" class="px-3 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">Debit
+                                </th>
+                                <th scope="col" class="px-3 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">
+                                    Credit</th>
+                                <th scope="col" class="px-3 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">
+                                    Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 bg-transparent">
+                            <tr class="bg-blue-900/20">
+                                <td colspan="4" class="py-4 pl-4 pr-3 text-sm font-bold text-white sm:pl-6">Opening
+                                    Balance</td>
+                                <td class="px-3 py-4 text-right text-sm font-bold text-blue-400">₹{{
+                                    "%.2f"|format(opening_balance) }}</td>
+                            </tr>
+                            {% for entry in ledger_entries %}
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-300 sm:pl-6">{{ entry.date
+                                    }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">{{ entry.particulars }}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-400">₹{{
+                                    "%.2f"|format(entry.debit) }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-400">₹{{
+                                    "%.2f"|format(entry.credit) }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-right text-sm font-medium text-white">₹{{
+                                    "%.2f"|format(entry.balance) }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="bg-blue-900/20 border-t-2 border-gray-700">
+                                <td colspan="4" class="py-4 pl-4 pr-3 text-sm font-bold text-white sm:pl-6">Closing
+                                    Balance</td>
+                                <td class="px-3 py-4 text-right text-sm font-bold text-blue-400">₹{{
+                                    "%.2f"|format(closing_balance) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,444 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes floating {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    @keyframes gradient-glow {
+        0% { opacity: 0.3; }
+        50% { opacity: 0.7; }
+        100% { opacity: 0.3; }
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    .animate-floating {
+        animation: floating 4s ease-in-out infinite;
+    }
+    
+    .animate-gradient-glow {
+        background: radial-gradient(circle at center, rgba(59, 130, 246, 0.4), rgba(147, 51, 234, 0.3), rgba(0, 0, 0, 0));
+        animation: gradient-glow 5s ease-in-out infinite;
+    }
+    
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+</style>
+
+<!-- 1. Hero Section -->
+<div class="relative overflow-hidden pt-8 pb-32 text-center">
+    <!-- Background Gradient -->
+    <div class="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-transparent to-transparent pointer-events-none"></div>
+    
+    <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 xl:px-16 2xl:px-24 relative z-10">
+        <!-- Target User Pill -->
+        <div class="inline-flex items-center px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-medium mb-8 animate-fade-in-up backdrop-blur-sm">
+            <span class="flex h-2 w-2 rounded-full bg-blue-500 mr-2 animate-pulse"></span>
+            For furniture & retail shops in India
+        </div>
+
+        <h1 class="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-8 leading-tight animate-fade-in-up delay-100">
+            Billing made <span class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">effortless.</span>
+        </h1>
+        
+        <p class="text-xl sm:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-200">
+            GST compliant, mobile-first billing for growing shops.
+            <br class="hidden sm:block">
+            Create invoices, track GST and share on WhatsApp – in seconds.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mb-10 animate-fade-in-up delay-300">
+            <a href="/auth/signup" class="group bg-blue-600 text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:scale-105 transform">
+                Start for free
+                <svg class="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
+            <a href="#demo" class="border-2 border-gray-600 text-gray-300 px-10 py-5 rounded-full text-lg font-medium hover:text-white hover:border-gray-400 hover:bg-gray-800/30 transition-all backdrop-blur-sm">
+                Watch demo
+            </a>
+        </div>
+        
+        <!-- Social Proof -->
+        <p class="text-sm text-gray-500 flex items-center justify-center gap-2 mb-4 animate-fade-in-up delay-400">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Trusted by 200+ shops in Kolkata & beyond
+        </p>
+        
+        <!-- Product Screenshot with Animation -->
+        <div class="mt-20 relative mx-auto max-w-6xl animate-fade-in-up delay-400">
+            <!-- Gradient Glow Background -->
+            <div class="absolute -inset-8 animate-gradient-glow rounded-3xl blur-3xl"></div>
+            
+            <!-- Screenshot Container -->
+            <div class="relative animate-floating">
+                <img 
+                    src="/static/img/dashboard-preview.png" 
+                    alt="WinderInvoice Dashboard Preview" 
+                    class="w-full rounded-2xl shadow-2xl border border-gray-800/50"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <!-- Fallback if image doesn't exist -->
+                <div class="hidden w-full aspect-video bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-gray-800 rounded-2xl shadow-2xl items-center justify-center">
+                    <div class="text-center p-12">
+                        <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">WinderInvoice Dashboard</h3>
+                        <p class="text-gray-400 max-w-md mx-auto">Beautiful, intuitive interface for managing your invoices, customers, and GST reports.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trust Badge -->
+            <div class="absolute bottom-6 right-6 bg-green-900/90 text-green-400 text-xs font-bold px-3 py-1.5 rounded-lg border border-green-700/50 backdrop-blur-sm shadow-lg z-10">
+                <span class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                    BETA ACCESS LIVE
+                </span>
+            </div>
+        </div>
+        
+        <!-- Demo Video Link -->
+        <div class="mt-8 text-center animate-fade-in-up delay-400">
+            <a href="#demo" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors group">
+                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-medium">Watch product demo (2 min)</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Features Section -->
+<div id="features" class="py-32 bg-gradient-to-b from-[#0B0C10] to-black">
+    <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12">
+        <div class="text-center mb-20">
+            <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6">Everything you need to bill faster</h2>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto">Powerful features designed for Indian businesses.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Lightning Fast Billing -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-10 rounded-3xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300 group hover:scale-105 hover:shadow-2xl hover:shadow-blue-900/20">
+                <div class="h-14 w-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg shadow-blue-900/50">
+                    <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Lightning Fast Billing</h3>
+                <p class="text-gray-400 mb-6">Create invoices in under <span class="text-white font-bold">10 seconds</span>.</p>
+                <ul class="space-y-3 text-gray-500">
+                    <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Save items & customers</li>
+                    <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Auto-fill details</li>
+                </ul>
+            </div>
+
+            <!-- GST Compliant -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-10 rounded-3xl border border-gray-800 hover:border-purple-500/50 transition-all duration-300 group hover:scale-105 hover:shadow-2xl hover:shadow-purple-900/20">
+                <div class="h-14 w-14 bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg shadow-purple-900/50">
+                    <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">GST Compliant</h3>
+                <p class="text-gray-400 mb-6">Generate <span class="text-white font-bold">GSTR-1 & 3B</span> in 1 click.</p>
+                <ul class="space-y-3 text-gray-500">
+                    <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>Auto CGST/SGST/IGST</li>
+                    <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>HSN Code support</li>
+                </ul>
+            </div>
+
+            <!-- WhatsApp Integration -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-10 rounded-3xl border border-gray-800 hover:border-green-500/50 transition-all duration-300 group hover:scale-105 hover:shadow-2xl hover:shadow-green-900/20">
+                <div class="h-14 w-14 bg-gradient-to-br from-green-600 to-green-800 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg shadow-green-900/50">
+                    <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">WhatsApp Integration</h3>
+                <p class="text-gray-400 mb-6">Send invoices on WhatsApp in <span class="text-white font-bold">1 tap</span>.</p>
+                <ul class="space-y-3 text-gray-500">
+                    <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Share PDF link</li>
+                    <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Thermal printer ready</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. How it works Section -->
+<div class="py-32 bg-black relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-blue-900/5 to-transparent pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-20">
+            <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4">Get started in 3 simple steps</h2>
+            <p class="text-blue-400 text-lg font-medium">Takes less than 2 minutes.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
+            <!-- Connecting Line (Desktop) -->
+            <div class="hidden md:block absolute top-16 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
+
+            <!-- Step 1 -->
+            <div class="text-center relative">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-600 to-blue-800 border-4 border-black rounded-full flex items-center justify-center mx-auto mb-8 text-5xl font-bold text-white shadow-2xl shadow-blue-900/50 relative z-10">
+                    1
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Create account</h3>
+                <p class="text-gray-400">Sign up with your mobile number</p>
+            </div>
+            <!-- Step 2 -->
+            <div class="text-center relative">
+                <div class="w-32 h-32 bg-gradient-to-br from-purple-600 to-purple-800 border-4 border-black rounded-full flex items-center justify-center mx-auto mb-8 text-5xl font-bold text-white shadow-2xl shadow-purple-900/50 relative z-10">
+                    2
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Add products</h3>
+                <p class="text-gray-400">Import from Excel or add manually</p>
+            </div>
+            <!-- Step 3 -->
+            <div class="text-center relative">
+                <div class="w-32 h-32 bg-gradient-to-br from-green-600 to-green-800 border-4 border-black rounded-full flex items-center justify-center mx-auto mb-8 text-5xl font-bold text-white shadow-2xl shadow-green-900/50 relative z-10">
+                    3
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Start billing</h3>
+                <p class="text-gray-400">Print or share on WhatsApp</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. Testimonials Section -->
+<div class="py-32 bg-gradient-to-b from-[#0B0C10] to-black">
+    <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12">
+        <h2 class="text-4xl sm:text-5xl font-bold text-white text-center mb-20">Trusted by shop owners</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-8 rounded-3xl border border-gray-800 flex flex-col hover:border-gray-700 transition-all hover:scale-105 hover:shadow-2xl">
+                <div class="flex text-yellow-500 mb-6 text-lg">★★★★★</div>
+                <p class="text-gray-300 text-lg mb-8 flex-grow leading-relaxed">"Billing is now super easy. My staff learned it in one day."</p>
+                <div class="flex items-center mt-auto">
+                    <div class="h-12 w-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white font-bold shadow-lg">RS</div>
+                    <div class="ml-4">
+                        <p class="text-white font-bold">Rahul Sharma</p>
+                        <p class="text-sm text-gray-500">Sharma Electronics</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-8 rounded-3xl border border-gray-800 flex flex-col hover:border-gray-700 transition-all hover:scale-105 hover:shadow-2xl">
+                <div class="flex text-yellow-500 mb-6 text-lg">★★★★★</div>
+                <p class="text-gray-300 text-lg mb-8 flex-grow leading-relaxed">"Best app for GST billing. I can send invoices on WhatsApp directly."</p>
+                <div class="flex items-center mt-auto">
+                    <div class="h-12 w-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-full flex items-center justify-center text-white font-bold shadow-lg">AP</div>
+                    <div class="ml-4">
+                        <p class="text-white font-bold">Amit Patel</p>
+                        <p class="text-sm text-gray-500">Patel General Store</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-8 rounded-3xl border border-gray-800 flex flex-col hover:border-gray-700 transition-all hover:scale-105 hover:shadow-2xl">
+                <div class="flex text-yellow-500 mb-6 text-lg">★★★★★</div>
+                <p class="text-gray-300 text-lg mb-8 flex-grow leading-relaxed">"Perfect for my furniture shop. GST reports are very accurate."</p>
+                <div class="flex items-center mt-auto">
+                    <div class="h-12 w-12 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white font-bold shadow-lg">SD</div>
+                    <div class="ml-4">
+                        <p class="text-white font-bold">Sneha Das</p>
+                        <p class="text-sm text-gray-500">Das Furniture</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Pricing Section -->
+<div id="pricing" class="py-32 bg-black relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6">Simple pricing</h2>
+        <p class="text-xl text-gray-400 mb-16">No hidden fees. Cancel anytime.</p>
+        
+        <div class="max-w-md mx-auto bg-gradient-to-br from-[#111] to-[#0a0a0a] rounded-3xl border-2 border-blue-600 p-10 relative overflow-hidden transform hover:scale-105 transition-all duration-300 shadow-2xl shadow-blue-900/20">
+            <div class="absolute top-0 right-0 bg-gradient-to-br from-blue-600 to-blue-700 text-white text-xs font-bold px-4 py-2 rounded-bl-2xl shadow-lg">POPULAR</div>
+            
+            <h3 class="text-2xl font-bold text-white mb-2">Professional</h3>
+            <p class="text-sm text-gray-500 mb-8">Best for: Single shop</p>
+            
+            <div class="flex items-baseline justify-center mb-3">
+                <span class="text-6xl font-extrabold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">₹299</span>
+                <span class="text-gray-500 ml-3 text-xl">/ month</span>
+            </div>
+            <p class="text-blue-400 font-medium mb-10">7-day free trial · No credit card needed</p>
+            
+            <ul class="space-y-5 text-left mb-10 max-w-xs mx-auto">
+                <li class="flex items-center text-gray-300">
+                    <svg class="h-6 w-6 text-green-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Unlimited invoices
+                </li>
+                <li class="flex items-center text-gray-300">
+                    <svg class="h-6 w-6 text-green-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    GST reports (GSTR-1, 3B)
+                </li>
+                <li class="flex items-center text-gray-300">
+                    <svg class="h-6 w-6 text-green-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    WhatsApp share & Thermal Print
+                </li>
+                <li class="flex items-center text-gray-300">
+                    <svg class="h-6 w-6 text-green-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Excel Export
+                </li>
+            </ul>
+            
+            <a href="/auth/signup" class="block w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-5 rounded-2xl font-bold hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 text-lg">
+                Start free – no credit card
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 6. FAQ Section -->
+<div id="faq" class="py-32 bg-gradient-to-b from-[#0B0C10] to-black">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6 text-center">Frequently Asked Questions</h2>
+        <p class="text-xl text-gray-400 text-center mb-16">Everything you need to know</p>
+        
+        <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition-colors">
+                <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq('faq1')">
+                    <span class="font-bold text-white text-lg group-hover:text-blue-400 transition-colors">Is WinderInvoice GST compliant?</span>
+                    <svg id="icon-faq1" class="w-6 h-6 text-gray-400 transform transition-transform group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div id="faq1" class="hidden px-8 pb-6 text-gray-400 leading-relaxed">
+                    Yes, all invoices generated are 100% GST compliant and accepted by tax authorities. We support HSN codes and automatic tax calculations.
+                </div>
+            </div>
+            
+            <!-- FAQ Item 2 -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition-colors">
+                <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq('faq2')">
+                    <span class="font-bold text-white text-lg group-hover:text-blue-400 transition-colors">Can I use it on my mobile?</span>
+                    <svg id="icon-faq2" class="w-6 h-6 text-gray-400 transform transition-transform group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div id="faq2" class="hidden px-8 pb-6 text-gray-400 leading-relaxed">
+                    Yes, WinderInvoice is mobile-first. You can create bills, manage customers, and check reports directly from your phone's browser.
+                </div>
+            </div>
+            
+            <!-- FAQ Item 3 -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition-colors">
+                <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq('faq3')">
+                    <span class="font-bold text-white text-lg group-hover:text-blue-400 transition-colors">Is my data secure?</span>
+                    <svg id="icon-faq3" class="w-6 h-6 text-gray-400 transform transition-transform group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div id="faq3" class="hidden px-8 pb-6 text-gray-400 leading-relaxed">
+                    Absolutely. We use industry-standard encryption to protect your data. Your business information is safe and only accessible by you.
+                </div>
+            </div>
+            
+            <!-- FAQ Item 4 -->
+            <div class="bg-gradient-to-br from-[#111] to-[#0a0a0a] border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition-colors">
+                <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq('faq4')">
+                    <span class="font-bold text-white text-lg group-hover:text-blue-400 transition-colors">What happens after the 7-day free trial?</span>
+                    <svg id="icon-faq4" class="w-6 h-6 text-gray-400 transform transition-transform group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div id="faq4" class="hidden px-8 pb-6 text-gray-400 leading-relaxed">
+                    After the trial, you can upgrade to the Professional plan for ₹299/month. If you choose not to, your account will be paused, but your data will remain safe.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 7. Footer -->
+<footer class="bg-black border-t border-gray-800 pt-20 pb-10">
+    <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12">
+        <!-- Pre-footer CTA -->
+        <div class="text-center mb-20 pb-16 border-b border-gray-800">
+            <h3 class="text-3xl sm:text-4xl font-bold text-white mb-6">Ready to simplify GST billing?</h3>
+            <p class="text-xl text-gray-400 mb-8">Join 200+ businesses already using WinderInvoice</p>
+            <a href="/auth/signup" class="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-5 rounded-full font-bold hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 text-lg hover:scale-105 transform">
+                Start for free in 2 minutes
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                    <img src="/static/img/logo-w-gradient-new.png" alt="WinderInvoice Logo" class="w-10 h-10 rounded-lg shadow-brand">
+                    <span class="text-2xl font-bold text-white">Winder<span class="text-blue-400">Invoice</span></span>
+                </div>
+                <p class="text-gray-400 max-w-sm mb-6 leading-relaxed">
+                    Simple billing software for small businesses. Designed to make GST compliance effortless.
+                </p>
+                <div class="flex items-center text-gray-500">
+                    <span class="mr-2 font-medium">Made in India</span> 🇮🇳
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-6 text-lg">Product</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                    <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
+                    <li><a href="#faq" class="hover:text-white transition-colors">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-6 text-lg">Contact</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="mailto:winderinvoice@gmail.com" class="hover:text-white transition-colors">winderinvoice@gmail.com</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">WhatsApp Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-10 text-center text-gray-500">
+            &copy; 2025 WinderInvoice. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleFaq(id) {
+        const content = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+        
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+        } else {
+            content.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,105 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+*.pyc
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+.venv*/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+gst_billing*.db
+app.db
+
+# Logs
+*.log
+logs/
+app.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+test_*.pdf
+
+# User uploads (will be handled by S3 in production)
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+*.pdf
+
+# Temporary HTML outputs
+dashboard_output.html
+
+# One-time scripts and debugging tools
+add_*.py
+check_*.py
+debug_*.py
+fix_*.py
+migrate_*.py
+ensure_*.py
+create_admin.py
+create_test_data.py
+generate_*.py
+get_*.py
+test_pdf_headers.py
+
+# Development/alternate versions
+*_v1.html
+*_v2.html
+*_v3.html
+*_ultimate.html
+*_blue.html
+*_dark.html
+*_dark_*.html
+*_elegant.html
+*_modern.html
+*_teal.html
+
+# Static file uploads (user-generated content)
+app/static/brand/*
+!app/static/brand/.gitkeep
+app/static/images/*
+!app/static/images/.gitkeep
+
+# Git
+.git/
+.gitattributes
+
+# Docker
+.dockerignore

@@ -1,0 +1,337 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 py-8">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-3xl font-bold leading-7 text-white sm:text-3xl sm:truncate">New Invoice</h2>
+            <p class="mt-2 text-sm text-gray-400">Create a new GST tax invoice.</p>
+        </div>
+    </div>
+
+    <form id="invoiceForm" action="/invoices/new" method="POST">
+        <div class="space-y-8">
+            <!-- Invoice Details -->
+            <div class="bg-[#111] shadow-xl sm:rounded-xl border border-gray-800 card-gradient overflow-hidden">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg leading-6 font-medium text-white mb-6">Invoice Details</h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="customer_id" class="block text-sm font-medium text-gray-300 mb-1">Customer</label>
+                            <select id="customer_id" name="customer_id" required
+                                class="block w-full pl-3 pr-10 py-2 text-base bg-gray-900 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                {% for customer in customers %}
+                                <option value="{{ customer.id }}">{{ customer.name }} ({{ customer.state }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="invoice_no" class="block text-sm font-medium text-gray-300 mb-1">Invoice No</label>
+                            <input type="text" name="invoice_no" id="invoice_no" value="{{ next_invoice_no }}" required
+                                class="block w-full shadow-sm sm:text-sm bg-gray-900 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="date" class="block text-sm font-medium text-gray-300 mb-1">Date</label>
+                            <input type="date" name="date" id="date" value="{{ today }}" required
+                                class="block w-full shadow-sm sm:text-sm bg-gray-900 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="place_of_supply" class="block text-sm font-medium text-gray-300 mb-1">Place of Supply</label>
+                            <input type="text" name="place_of_supply" id="place_of_supply"
+                                class="block w-full shadow-sm sm:text-sm bg-gray-900 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="vehicle_no" class="block text-sm font-medium text-gray-300 mb-1">Vehicle No</label>
+                            <input type="text" name="vehicle_no" id="vehicle_no"
+                                class="block w-full shadow-sm sm:text-sm bg-gray-900 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="eway_bill_no" class="block text-sm font-medium text-gray-300 mb-1">E-Way Bill No</label>
+                            <input type="text" name="eway_bill_no" id="eway_bill_no"
+                                class="block w-full shadow-sm sm:text-sm bg-gray-900 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Items -->
+            <div class="bg-[#111] shadow-xl sm:rounded-xl border border-gray-800 card-gradient overflow-hidden">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg leading-6 font-medium text-white mb-6">Items</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-800" id="itemsTable">
+                            <thead class="bg-black/50">
+                                <tr>
+                                    <th class="py-3.5 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 sm:pl-6 w-[20%]">Product</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[25%]">Description</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[10%]">HSN</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[8%]">Pkts</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[8%]">Qty</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[8%]">Unit</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[10%]">Rate</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[8%]">Tax %</th>
+                                    <th class="px-3 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400 w-[10%]">Total</th>
+                                    <th class="relative py-3.5 pl-3 pr-4 sm:pr-6 w-[5%]">
+                                        <span class="sr-only">Delete</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800 bg-transparent" id="itemsBody">
+                                <!-- Rows will be added here dynamically -->
+                            </tbody>
+                        </table>
+                        <button type="button" onclick="addItemRow()"
+                            class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Add Item
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="items_json" id="items_json">
+
+        <div class="pt-8 pb-12">
+            <div class="flex justify-end gap-4">
+                <a href="/invoices"
+                    class="bg-transparent py-2.5 px-6 border border-gray-700 rounded-lg shadow-sm text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" onclick="prepareSubmit(event)"
+                    class="inline-flex justify-center py-2.5 px-6 border border-transparent shadow-lg text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all btn-scale">
+                    Create Invoice
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Products data from backend (correct Jinja syntax)
+    const products = [
+        {% for product in products %}
+    {
+        id: {{ product.id }},
+        name: "{{ product.name }}",
+        hsn_code: "{{ product.hsn_code }}",
+        unit: "{{ product.unit }}",
+        rate: {{ product.rate }},
+        gst_rate: {{ product.gst_rate }}
+    } {% if not loop.last %}, {% endif %}
+    {% endfor %}
+    ];
+
+    let itemRowCounter = 0;
+
+    function addItemRow() {
+        try {
+            const tbody = document.getElementById('itemsBody');
+            const row = document.createElement('tr');
+            row.className = 'item-row hover:bg-white/5 transition-colors';
+            row.dataset.rowId = itemRowCounter;
+
+            row.innerHTML = `
+                <td class="py-4 pl-4 pr-3 sm:pl-6 align-top">
+                    <select id="item_product_${itemRowCounter}" class="product-select block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" onchange="productChanged(this)">
+                        <option value="">Select Product</option>
+                        ${products.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
+                    </select>
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <input type="text" id="item_desc_${itemRowCounter}" class="description-input block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Description">
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <input type="text" id="item_hsn_${itemRowCounter}" class="hsn-input block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="HSN">
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <input type="number" id="item_pkts_${itemRowCounter}" class="pkts-input block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="0" min="0" placeholder="Pkts">
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <input type="number" id="item_qty_${itemRowCounter}" class="qty-input block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="1" min="0.01" step="0.01" onchange="calculateRow(this)" required>
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <input type="text" id="item_unit_${itemRowCounter}" class="unit-input block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Unit">
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <input type="number" id="item_rate_${itemRowCounter}" class="rate-input block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" min="0" step="0.01" onchange="calculateRow(this)" placeholder="Rate" required>
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <input type="number" id="item_tax_${itemRowCounter}" class="tax-input block w-full bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" min="0" max="100" step="0.01" onchange="calculateRow(this)" placeholder="Tax %">
+                </td>
+                <td class="px-3 py-4 align-top">
+                    <span id="item_total_${itemRowCounter}" class="total-span font-bold text-blue-400 block py-2">0.00</span>
+                </td>
+                <td class="pl-3 pr-4 sm:pr-6 text-right align-top py-4">
+                    <button type="button" onclick="removeItemRow(this)" class="text-red-400 hover:text-red-300 font-medium transition-colors">Remove</button>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+            itemRowCounter++;
+
+            row.querySelector('.product-select').focus();
+        } catch (error) {
+            console.error('Error adding item row:', error);
+            alert('Failed to add item row. Please refresh the page and try again.');
+        }
+    }
+
+    function productChanged(select) {
+        try {
+            const row = select.closest('tr');
+            const productId = parseInt(select.value);
+            const product = products.find(p => p.id === productId);
+
+            if (product) {
+                // row.querySelector('.description-input').value = product.name; // Removed auto-population
+                row.querySelector('.hsn-input').value = product.hsn_code;
+                row.querySelector('.unit-input').value = 'Pcs'; // Default to Pcs, do not use product.unit (stock)
+                row.querySelector('.rate-input').value = product.rate.toFixed(2);
+                row.querySelector('.tax-input').value = product.gst_rate.toFixed(2);
+                calculateRow(select);
+            } else {
+                row.querySelector('.description-input').value = '';
+                row.querySelector('.hsn-input').value = '';
+                row.querySelector('.unit-input').value = '';
+                row.querySelector('.rate-input').value = '';
+                row.querySelector('.tax-input').value = '';
+                row.querySelector('.total-span').textContent = '0.00';
+            }
+        } catch (error) {
+            console.error('Error in productChanged:', error);
+        }
+    }
+
+    function calculateRow(input) {
+        try {
+            const row = input.closest('tr');
+            const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
+            const rate = parseFloat(row.querySelector('.rate-input').value) || 0;
+            const taxRate = parseFloat(row.querySelector('.tax-input').value) || 0;
+
+            const taxable = qty * rate;
+            const taxAmount = taxable * (taxRate / 100);
+            const total = taxable + taxAmount;
+
+            row.querySelector('.total-span').textContent = total.toFixed(2);
+            updateGrandTotal();
+        } catch (error) {
+            console.error('Error calculating row:', error);
+        }
+    }
+
+    function removeItemRow(button) {
+        try {
+            const row = button.closest('tr');
+            row.remove();
+            updateGrandTotal();
+        } catch (error) {
+            console.error('Error removing row:', error);
+        }
+    }
+
+    function updateGrandTotal() {
+        try {
+            let grandTotal = 0;
+            document.querySelectorAll('.total-span').forEach(span => {
+                grandTotal += parseFloat(span.textContent) || 0;
+            });
+            console.log('Grand Total:', grandTotal.toFixed(2));
+        } catch (error) {
+            console.error('Error updating grand total:', error);
+        }
+    }
+
+    function validateItems() {
+        const rows = document.querySelectorAll('#itemsBody tr');
+
+        if (rows.length === 0) {
+            alert('Please add at least one item to the invoice.');
+            return false;
+        }
+
+        let isValid = true;
+        let errorMessages = [];
+
+        rows.forEach((row, index) => {
+            const productSelect = row.querySelector('.product-select');
+            const description = row.querySelector('.description-input').value.trim();
+            const hsn = row.querySelector('.hsn-input').value.trim();
+            const qty = parseFloat(row.querySelector('.qty-input').value);
+            const rate = parseFloat(row.querySelector('.rate-input').value);
+
+            if (!productSelect.value && !description) {
+                errorMessages.push(`Row ${index + 1}: Please select a product or enter a description`);
+                isValid = false;
+            }
+            if (!hsn) {
+                errorMessages.push(`Row ${index + 1}: HSN code is required`);
+                isValid = false;
+            }
+            if (isNaN(qty) || qty <= 0) {
+                errorMessages.push(`Row ${index + 1}: Quantity must be greater than 0`);
+                isValid = false;
+            }
+            if (isNaN(rate) || rate < 0) {
+                errorMessages.push(`Row ${index + 1}: Rate is required and must be non-negative`);
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            alert('Please fix the following errors:\n\n' + errorMessages.join('\n'));
+        }
+
+        return isValid;
+    }
+
+    function prepareSubmit(event) {
+        event.preventDefault();
+
+        try {
+            if (!validateItems()) return false;
+
+            const items = [];
+            document.querySelectorAll('#itemsBody tr').forEach(row => {
+                const productSelect = row.querySelector('.product-select');
+                const description = row.querySelector('.description-input').value.trim();
+                const hsn = row.querySelector('.hsn-input').value.trim();
+                const pkts = parseInt(row.querySelector('.pkts-input').value) || 0;
+                const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
+                const unit = row.querySelector('.unit-input').value.trim();
+                const rate = parseFloat(row.querySelector('.rate-input').value) || 0;
+                const taxRate = parseFloat(row.querySelector('.tax-input').value) || 0;
+
+                items.push({
+                    product_id: productSelect.value || null,
+                    description: description || (productSelect.value ? productSelect.options[productSelect.selectedIndex].text : ''),
+                    hsn_code: hsn,
+                    no_of_pkts: pkts,
+                    qty: qty,
+                    unit: unit,
+                    rate: rate,
+                    tax_rate: taxRate
+                });
+            });
+
+            document.getElementById('items_json').value = JSON.stringify(items);
+            document.getElementById('invoiceForm').submit();
+        } catch (error) {
+            console.error('Error preparing submission:', error);
+            alert('An error occurred while preparing the invoice. Please check your entries and try again.');
+            return false;
+        }
+    }
+
+    // Add first row by default when page loads
+    window.addEventListener('DOMContentLoaded', function () {
+        addItemRow();
+    });
+</script>
+{% endblock %}

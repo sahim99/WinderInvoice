@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: gst_user
+      POSTGRES_PASSWORD: gst_password
+      POSTGRES_DB: gst_billing
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gst_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Web Application
+  web:
+    build: .
+    # No command - uses entrypoint.sh from Dockerfile
+    volumes:
+      - .:/app
+      - /app/.venv  # Exclude venv from volume
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://gst_user:gst_password@db:5432/gst_billing
+      - SECRET_KEY=dev-secret-key-change-in-production
+      - STORAGE_PROVIDER=local
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - PORT=8000
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
