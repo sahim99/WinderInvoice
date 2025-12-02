@@ -62,17 +62,17 @@ dashboard_output.html
 
 # Temporary Python scripts (debug/migration)
 # These should be in scripts/ if needed, but ignored in root
-add_*.py
-check_*.py
-debug_*.py
-fix_*.py
-migrate_*.py
-ensure_*.py
-create_admin.py
-create_test_data.py
-generate_*.py
-get_*.py
-test_*.py
+/add_*.py
+/check_*.py
+/debug_*.py
+/fix_*.py
+/migrate_*.py
+/ensure_*.py
+/create_admin.py
+/create_test_data.py
+/generate_*.py
+/get_*.py
+/test_*.py
 
 # Scripts folder (optional: if you want to keep scripts local only)
 # scripts/
