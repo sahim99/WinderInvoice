@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - WinderInvoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+        
+        /* Modern Theme Styles */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .card-gradient {
+            background: linear-gradient(180deg, rgba(30, 30, 35, 0.7), rgba(20, 20, 25, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Toast Animation */
+        @keyframes slideIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .toast {
+            animation: slideIn 0.5s ease-out forwards, fadeOut 0.5s ease-out 2.5s forwards;
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .mobile-menu.active {
+            max-height: 500px;
+        }
+        
+        /* Form inputs dark mode override */
+        input, select, textarea {
+            background-color: #111 !important;
+            border-color: #333 !important;
+            color: white !important;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #60a5fa !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+        }
+
+        /* Fix for Chrome Autofill */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #111 inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white flex flex-col min-h-screen selection:bg-blue-500 selection:text-white">
+    <nav class="glass-nav fixed w-full top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center">
+                    <a href="{% if user %}/dashboard{% else %}/{% endif %}" class="text-2xl font-bold tracking-tight flex items-center gap-3">
+                        <!-- Modern Abstract Logo -->
+                        <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <span class="font-extrabold tracking-tight">Winder<span class="text-blue-400">Invoice</span></span>
+                    </a>
+                    
+                    {% if user %}
+                    <!-- Authenticated Navigation -->
+                    <div class="hidden md:ml-12 md:flex md:space-x-8">
+                        <a href="/dashboard"
+                            class="{% if request.url.path == '/dashboard' %}text-white border-b-2 border-blue-500{% else %}text-gray-400 hover:text-white{% endif %} px-1 pt-1 text-sm font-medium transition-colors h-20 flex items-center">
+                            Dashboard
+                        </a>
+                        <a href="/invoices"
+                            class="{% if '/invoices' in request.url.path %}text-white border-b-2 border-blue-500{% else %}text-gray-400 hover:text-white{% endif %} px-1 pt-1 text-sm font-medium transition-colors h-20 flex items-center">
+                            Invoices
+                        </a>
+                        <a href="/customers"
+                            class="{% if '/customers' in request.url.path %}text-white border-b-2 border-blue-500{% else %}text-gray-400 hover:text-white{% endif %} px-1 pt-1 text-sm font-medium transition-colors h-20 flex items-center">
+                            Customers
+                        </a>
+                        <a href="/products"
+                            class="{% if '/products' in request.url.path %}text-white border-b-2 border-blue-500{% else %}text-gray-400 hover:text-white{% endif %} px-1 pt-1 text-sm font-medium transition-colors h-20 flex items-center">
+                            Products
+                        </a>
+                        <a href="/reports/gst-summary"
+                            class="{% if '/reports' in request.url.path %}text-white border-b-2 border-blue-500{% else %}text-gray-400 hover:text-white{% endif %} px-1 pt-1 text-sm font-medium transition-colors h-20 flex items-center">
+                            Reports
+                        </a>
+                    </div>
+                    {% else %}
+                    <!-- Public Navigation -->
+                    <div class="hidden md:ml-12 md:flex md:space-x-10">
+                        <a href="/" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">Home</a>
+                        <a href="/#features" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">Features</a>
+                        <a href="/#pricing" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">Pricing</a>
+                        <a href="/#faq" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">FAQ</a>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-4">
+                    {% if user %}
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden bg-black border-b border-gray-800">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    {% if user %}
+                    <a href="/dashboard" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Dashboard</a>
+                    <a href="/invoices" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Invoices</a>
+                    <a href="/customers" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Customers</a>
+                    <a href="/products" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Products</a>
+                    <a href="/reports/gst-summary" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Reports</a>
+                    <div class="border-t border-gray-800 pt-3 mt-3">
+                        <a href="/invoices/new" class="block px-3 py-2 text-base font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg text-center">New Invoice</a>
+                        <a href="/settings" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg mt-2">Settings</a>
+                        <a href="/auth/logout" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Logout</a>
+                    </div>
+                    {% else %}
+                    <a href="/" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Home</a>
+                    <a href="/#features" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Features</a>
+                    <a href="/#pricing" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Pricing</a>
+                    <a href="/#faq" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">FAQ</a>
+                    <div class="border-t border-gray-800 pt-3 mt-3">
+                        <a href="/auth/login" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-lg">Log in</a>
+                        <a href="/auth/signup" class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-gray-100 rounded-lg mt-2 text-center">Get Started</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto py-6 sm:px-6 lg:px-8 pt-24">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="fixed bottom-5 right-5 hidden z-50">
+        <div class="bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg flex items-center toast border border-green-500/20">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span id="toastMessage">Operation successful!</span>
+        </div>
+    </div>
+
+    <script>
+        // Check for success query param
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            const toast = document.getElementById('successToast');
+            toast.classList.remove('hidden');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        
+        // Check for signup success
+        if (urlParams.get('signup') === 'success') {
+            const toast = document.getElementById('successToast');
+            const message = document.getElementById('toastMessage');
+            message.textContent = 'Account created successfully! Please sign in.';
+            toast.classList.remove('hidden');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Profile Menu Toggle
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profile-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            menu.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        }
+        
+        // Close menu when clicking outside
+        window.addEventListener('click', function (e) {
+            const button = document.getElementById('user-menu-button');
+            const menu = document.getElementById('profile-menu');
+            if (button && menu && !button.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

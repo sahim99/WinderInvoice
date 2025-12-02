@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-3xl font-bold leading-7 text-white sm:text-3xl sm:truncate">Shop Settings</h2>
+            <p class="mt-2 text-sm text-gray-400">Manage your shop details, GST information, and bank account.</p>
+        </div>
+    </div>
+
+    <form action="/settings" method="POST" class="space-y-8">
+        
+        <!-- Shop Details -->
+        <div class="bg-[#111] shadow-xl sm:rounded-xl border border-gray-800 card-gradient overflow-hidden">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-white mb-1">Shop Details</h3>
+                <p class="text-sm text-gray-400 mb-6">Basic information about your business.</p>
+                
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-6">
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Shop Name</label>
+                        <input type="text" name="name" id="name" value="{{ shop.name }}" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="address" class="block text-sm font-medium text-gray-300 mb-1">Address</label>
+                        <textarea id="address" name="address" rows="3" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">{{ shop.address }}</textarea>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="city" class="block text-sm font-medium text-gray-300 mb-1">City</label>
+                        <input type="text" name="city" id="city" value="{{ shop.city }}" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="state" class="block text-sm font-medium text-gray-300 mb-1">State</label>
+                        <input type="text" name="state" id="state" value="{{ shop.state }}" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="pincode" class="block text-sm font-medium text-gray-300 mb-1">Pincode</label>
+                        <input type="text" name="pincode" id="pincode" value="{{ shop.pincode }}" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="phone" class="block text-sm font-medium text-gray-300 mb-1">Phone</label>
+                        <input type="text" name="phone" id="phone" value="{{ shop.phone }}" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                        <input type="email" name="email" id="email" value="{{ shop.email }}" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GST Details -->
+        <div class="bg-[#111] shadow-xl sm:rounded-xl border border-gray-800 card-gradient overflow-hidden">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-white mb-1">GST Details</h3>
+                <p class="text-sm text-gray-400 mb-6">Tax information for your invoices.</p>
+                
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
+                        <label for="gstin" class="block text-sm font-medium text-gray-300 mb-1">GSTIN</label>
+                        <input type="text" name="gstin" id="gstin" value="{{ shop.gstin }}" required
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bank Details -->
+        <div class="bg-[#111] shadow-xl sm:rounded-xl border border-gray-800 card-gradient overflow-hidden">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-white mb-1">Bank Details</h3>
+                <p class="text-sm text-gray-400 mb-6">Bank account details to be printed on invoices.</p>
+                
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
+                        <label for="bank_name" class="block text-sm font-medium text-gray-300 mb-1">Bank Name</label>
+                        <input type="text" name="bank_name" id="bank_name" value="{{ shop.bank_name or '' }}"
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="account_number" class="block text-sm font-medium text-gray-300 mb-1">Account Number</label>
+                        <input type="text" name="account_number" id="account_number" value="{{ shop.account_number or '' }}"
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="ifsc_code" class="block text-sm font-medium text-gray-300 mb-1">IFSC Code</label>
+                        <input type="text" name="ifsc_code" id="ifsc_code" value="{{ shop.ifsc_code or '' }}"
+                            class="block w-full shadow-sm sm:text-sm bg-black border-gray-700 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-5 pb-12">
+            <div class="flex justify-end gap-4">
+                <button type="button"
+                    class="bg-transparent py-2.5 px-6 border border-gray-700 rounded-lg shadow-sm text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                    onclick="window.history.back()">
+                    Cancel
+                </button>
+                <button type="submit"
+                    class="inline-flex justify-center py-2.5 px-6 border border-transparent shadow-lg text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all btn-scale">
+                    Save Settings
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
