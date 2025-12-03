@@ -112,20 +112,24 @@
     </form>
 </div>
 
-<script>
-    // Products data from backend (correct Jinja syntax)
-    const products = [
+<script id="products-data" type="application/json">
+    [
         {% for product in products %}
-    {
-        id: {{ product.id }},
-        name: "{{ product.name }}",
-        hsn_code: "{{ product.hsn_code }}",
-        unit: "{{ product.unit }}",
-        rate: {{ product.rate }},
-        gst_rate: {{ product.gst_rate }}
-    } {% if not loop.last %}, {% endif %}
-    {% endfor %}
-    ];
+        {
+            "id": {{ product.id }},
+            "name": "{{ product.name }}",
+            "hsn_code": "{{ product.hsn_code }}",
+            "unit": "{{ product.unit }}",
+            "rate": {{ product.rate }},
+            "gst_rate": {{ product.gst_rate }}
+        }{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    ]
+</script>
+
+<script>
+    // Parse products data from the JSON script tag
+    const products = JSON.parse(document.getElementById('products-data').textContent);
 
     let itemRowCounter = 0;
 

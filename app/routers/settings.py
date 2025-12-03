@@ -170,6 +170,7 @@ async def update_profile(
                 raise HTTPException(status_code=400, detail="Phone number already in use")
 
         user.full_name = full_name
+        user.name = full_name  # Sync legacy field
         user.phone = phone
         user.language = language
         user.timezone = timezone
